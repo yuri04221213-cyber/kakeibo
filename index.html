@@ -317,7 +317,7 @@ function startApp(){
 }
 
 function changeHousehold(){
-  if(!confirm('家計IDを変更しますか？\n（このデバイスはID�変わります）')) return;
+  if(!confirm('家計IDを変更しますか？\n（このデバイスのIDが変わります）')) return;
   if(dbListener){ db.ref('households/' + householdId).off('value', dbListener); dbListener=null; }
   document.getElementById('hid-input').value = householdId;
   document.getElementById('setup-overlay').style.display = '';
@@ -389,7 +389,7 @@ function deleteEntry(id){
 
 function buildBudgetInputs(){
   const wrap=document.getElementById('budget-inputs');
-  if('wrap) return;
+  if(!wrap) return;
   wrap.innerHTML='';
   CATS.forEach(c=>{
     const row=document.createElement('div');
@@ -491,7 +491,7 @@ function render(){
     const div=document.createElement('div');
     div.className='bcard';
     div.innerHTML=`<div class="bcard-top"><span class="bcat">${c.key}</span><span class="bamount ${cls}">${fmt(spent)} / ${fmt(bud)}</span></div>
-      <div claps="btrack"><div class="bfill ${fillCls}" style="width:${pct}%"></div></div>
+      <div class="btrack"><div class="bfill ${fillCls}" style="width:${pct}%"></div></div>
       <div class="brem ${cls}">${rem>=0?'残り '+fmt(rem):'超過 '+fmt(-rem)}</div>`;
     bars.appendChild(div);
   });
