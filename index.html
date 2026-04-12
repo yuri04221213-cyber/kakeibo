@@ -52,6 +52,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
 .tag-cash{background:#d8f0c0;color:#2a5a10;}
 .tag-paypay{background:#ffe0d0;color:#7a2a10;}
 .tag-bank{background:#e0d8f8;color:#3a2a7a;}
+.tag-point{background:#fef0c0;color:#7a5a00;}
 .del-btn{background:none;border:none;cursor:pointer;color:#bbb;font-size:12px;padding:0;}
 .del-btn:hover{color:#e24b4a;}
 .empty-msg{padding:24px;text-align:center;color:#bbb;font-size:12px;}
@@ -129,6 +130,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <div class="tab" onclick="switchTab('cash',this)">現金</div>
     <div class="tab" onclick="switchTab('paypay',this)">PayPay</div>
     <div class="tab" onclick="switchTab('bank',this)">引落</div>
+    <div class="tab" onclick="switchTab('point',this)">ポイント</div>
     <div class="tab" onclick="switchTab('carddetail',this)">カード明細</div>
     <div class="tab" onclick="switchTab('budget',this)">予算設定</div>
   </div>
@@ -174,6 +176,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
           <option value="cash">現金</option>
           <option value="paypay">PayPay</option>
           <option value="bank">引落</option>
+          <option value="point">ポイント</option>
         </select>
         <input type="text" id="f-memo" placeholder="メモ（店名など）">
       </div>
@@ -195,6 +198,9 @@ select:focus,input:focus{outline:none;border-color:#888;}
   </div>
   <div id="panel-bank" class="panel">
     <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-bank"></div></div>
+  </div>
+  <div id="panel-point" class="panel">
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-point"></div></div>
   </div>
 
   <div id="panel-carddetail" class="panel">
@@ -256,8 +262,8 @@ const DEFAULT_BUDGETS={
   'アパート代':35000,'インデックス':30000
 };
 const CARD_ITEMS=['歯医者','健康診断','プライム','ユーチューブ','キャンバ','タイヤ代金','自動車税','自動車保険','火災保険','車検','コノハ','ワンパス'];
-const PAY_LABELS={card:'カード',cash:'現金',paypay:'PayPay',bank:'引落'};
-const PAY_TAG={card:'tag-card',cash:'tag-cash',paypay:'tag-paypay',bank:'tag-bank'};
+const PAY_LABELS={card:'カード',cash:'現金',paypay:'PayPay',bank:'引落',point:'ポイント'};
+const PAY_TAG={card:'tag-card',cash:'tag-cash',paypay:'tag-paypay',bank:'tag-bank',point:'tag-point'};
 
 let currentYear, currentMonth;
 let entries=[], budgets={...DEFAULT_BUDGETS}, cardItems={}, cardChecked={};
@@ -501,6 +507,7 @@ function render(){
   renderLog('log-cash',getFiltered('cash'));
   renderLog('log-paypay',getFiltered('paypay'));
   renderLog('log-bank',getFiltered('bank'));
+  renderLog('log-point',getFiltered('point'));
 }
 
 // Enterキーで開始
