@@ -14,6 +14,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .nav-btn{background:none;border:1px solid #d0d0c8;border-radius:6px;padding:3px 10px;cursor:pointer;font-size:13px;color:#666;}
 .nav-btn:hover{background:#f0f0ec;}
 .today-btn{font-size:11px;padding:3px 8px;}
+.csv-btn{font-size:11px;padding:3px 10px;background:#1a1a1a;color:#fff;border:none;border-radius:6px;cursor:pointer;}
+.csv-btn:hover{background:#333;}
 .main{max-width:900px;margin:0 auto;padding:16px;}
 .sum-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
 .scard{background:#fff;border-radius:8px;padding:10px 14px;border:1px solid #e5e5e0;}
@@ -44,8 +46,8 @@ select:focus,input:focus{outline:none;border-color:#888;}
 .add-btn{height:33px;padding:0 12px;background:#1a1a1a;border:none;border-radius:6px;cursor:pointer;font-size:13px;color:#fff;white-space:nowrap;}
 .add-btn:hover{background:#333;}
 .log-box{background:#fff;border:1px solid #e5e5e0;border-radius:10px;overflow:hidden;margin-bottom:12px;}
-.log-head{display:grid;grid-template-columns:55px 68px 1fr 85px 28px;gap:6px;padding:7px 14px;background:#f5f5f0;font-size:11px;color:#888;font-weight:600;}
-.log-row{display:grid;grid-template-columns:55px 68px 1fr 85px 28px;gap:6px;padding:9px 14px;border-top:1px solid #f0f0ec;align-items:center;}
+.log-head{display:grid;grid-template-columns:55px 68px 1fr 85px 28px 28px;gap:6px;padding:7px 14px;background:#f5f5f0;font-size:11px;color:#888;font-weight:600;}
+.log-row{display:grid;grid-template-columns:55px 68px 1fr 85px 28px 28px;gap:6px;padding:9px 14px;border-top:1px solid #f0f0ec;align-items:center;}
 .log-row:hover{background:#fafaf8;}
 .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:999px;font-weight:500;}
 .tag-card{background:#deeeff;color:#1a4a7a;}
@@ -55,6 +57,8 @@ select:focus,input:focus{outline:none;border-color:#888;}
 .tag-point{background:#fef0c0;color:#7a5a00;}
 .del-btn{background:none;border:none;cursor:pointer;color:#bbb;font-size:12px;padding:0;}
 .del-btn:hover{color:#e24b4a;}
+.edit-btn{background:none;border:none;cursor:pointer;color:#bbb;font-size:12px;padding:0;}
+.edit-btn:hover{color:#1D9E75;}
 .empty-msg{padding:24px;text-align:center;color:#bbb;font-size:12px;}
 .cd-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
 .cd-item{display:flex;align-items:center;gap:6px;padding:6px 8px;background:#fafaf8;border-radius:6px;border:1px solid #e5e5e0;}
@@ -78,11 +82,19 @@ select:focus,input:focus{outline:none;border-color:#888;}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#ccc;display:inline-block;margin-left:6px;vertical-align:middle;}
 .sync-dot.synced{background:#1D9E75;}
 .sync-dot.syncing{background:#EF9F27;}
+/* Edit modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:200;}
+.modal-box{background:#fff;border-radius:12px;padding:20px;width:340px;max-width:92vw;border:1px solid #e5e5e0;}
+.modal-title{font-size:11px;color:#888;font-weight:600;margin-bottom:12px;text-transform:uppercase;letter-spacing:.05em;}
+.modal-btns{display:flex;gap:8px;margin-top:10px;}
+.modal-btn-save{flex:1;height:36px;background:#1a1a1a;border:none;border-radius:6px;color:#fff;font-size:13px;cursor:pointer;font-weight:600;}
+.modal-btn-save:hover{background:#333;}
+.modal-btn-cancel{height:36px;padding:0 14px;background:none;border:1px solid #d0d0c8;border-radius:6px;color:#666;font-size:13px;cursor:pointer;}
 @media(max-width:600px){
   .sum-row{grid-template-columns:1fr 1fr;}
   .budget-grid{grid-template-columns:1fr;}
   .frow-4{grid-template-columns:1fr 1fr;}
-  .log-head,.log-row{grid-template-columns:50px 1fr 80px 24px;}
+  .log-head,.log-row{grid-template-columns:50px 1fr 80px 24px 24px;}
   .log-head span:nth-child(2),.log-row span:nth-child(2){display:none;}
 }
 </style>
@@ -100,6 +112,63 @@ select:focus,input:focus{outline:none;border-color:#888;}
   </div>
 </div>
 
+<!-- 編集モーダル -->
+<div class="modal-overlay" id="edit-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">記録を修正</div>
+    <input type="hidden" id="edit-id">
+    <div class="frow frow-1">
+      <input type="date" id="edit-date">
+    </div>
+    <div class="frow frow-1">
+      <select id="edit-cat">
+        <optgroup label="食費">
+          <option value="食費">食費</option>
+        </optgroup>
+        <optgroup label="変動費">
+          <option value="遊興費">遊興費</option>
+          <option value="化粧品">化粧品</option>
+          <option value="日用品">日用品</option>
+          <option value="プレゼント">プレゼント</option>
+          <option value="オフ会等">オフ会等</option>
+          <option value="医者代">医者代</option>
+        </optgroup>
+        <optgroup label="固定費">
+          <option value="美容院">美容院・湘南美容</option>
+          <option value="電気代">電気代</option>
+          <option value="スマート光">スマート光</option>
+          <option value="スマホ">スマホ</option>
+          <option value="サブスク">サブスク・アプリ</option>
+          <option value="ガソリン灯油">ガソリン・灯油</option>
+          <option value="水道代">水道代</option>
+          <option value="ガス代">ガス代</option>
+          <option value="アパート代">アパート代</option>
+        </optgroup>
+        <optgroup label="貯蓄">
+          <option value="インデックス">インデックス</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="frow frow-2">
+      <select id="edit-pay">
+        <option value="card">カード</option>
+        <option value="cash">現金</option>
+        <option value="paypay">PayPay</option>
+        <option value="bank">引落</option>
+        <option value="point">ポイント</option>
+      </select>
+      <input type="number" id="edit-amount" placeholder="金額（円）" min="0">
+    </div>
+    <div class="frow frow-1">
+      <input type="text" id="edit-memo" placeholder="メモ（店名など）">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn-save" onclick="saveEdit()">保存</button>
+      <button class="modal-btn-cancel" onclick="cancelEdit()">キャンセル</button>
+    </div>
+  </div>
+</div>
+
 <!-- メインアプリ -->
 <div id="app-wrap" style="display:none">
 <div class="header">
@@ -111,6 +180,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <span id="month-label"></span>
     <button class="nav-btn" onclick="changeMonth(1)">›</button>
     <button class="nav-btn today-btn" onclick="goToday()">今月</button>
+    <button class="csv-btn" onclick="downloadCSV()">↓ CSV</button>
   </div>
 </div>
 
@@ -182,25 +252,25 @@ select:focus,input:focus{outline:none;border-color:#888;}
       </div>
     </div>
     <div class="log-box">
-      <div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div>
+      <div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div>
       <div id="log-all"></div>
     </div>
   </div>
 
   <div id="panel-card" class="panel">
-    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-card"></div></div>
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-card"></div></div>
   </div>
   <div id="panel-cash" class="panel">
-    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-cash"></div></div>
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-cash"></div></div>
   </div>
   <div id="panel-paypay" class="panel">
-    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-paypay"></div></div>
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-paypay"></div></div>
   </div>
   <div id="panel-bank" class="panel">
-    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-bank"></div></div>
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-bank"></div></div>
   </div>
   <div id="panel-point" class="panel">
-    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span></div><div id="log-point"></div></div>
+    <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-point"></div></div>
   </div>
 
   <div id="panel-carddetail" class="panel">
@@ -393,6 +463,64 @@ function deleteEntry(id){
   entries=entries.filter(e=>e.id!==id); save();
 }
 
+// 修正機能
+function editEntry(id){
+  const e = entries.find(x=>x.id===id);
+  if(!e) return;
+  document.getElementById('edit-id').value = id;
+  document.getElementById('edit-date').value = e.date;
+  document.getElementById('edit-cat').value = e.cat;
+  document.getElementById('edit-pay').value = e.pay;
+  document.getElementById('edit-amount').value = e.amount;
+  document.getElementById('edit-memo').value = e.memo||'';
+  document.getElementById('edit-modal').style.display = 'flex';
+}
+
+function saveEdit(){
+  const id = parseInt(document.getElementById('edit-id').value);
+  const date = document.getElementById('edit-date').value;
+  const cat = document.getElementById('edit-cat').value;
+  const pay = document.getElementById('edit-pay').value;
+  const amount = parseFloat(document.getElementById('edit-amount').value);
+  const memo = document.getElementById('edit-memo').value.trim();
+  if(!date||!amount||amount<=0){ alert('日付と金額を入力してください'); return; }
+  const idx = entries.findIndex(x=>x.id===id);
+  if(idx<0) return;
+  entries[idx] = {id, date, cat, pay, amount, memo};
+  entries.sort((a,b)=>b.date.localeCompare(a.date));
+  cancelEdit();
+  save();
+}
+
+function cancelEdit(){
+  document.getElementById('edit-modal').style.display = 'none';
+}
+
+// CSVダウンロード
+function downloadCSV(){
+  const all = getFiltered('all');
+  if(all.length===0){ alert('この月のデータがありません'); return; }
+  const BOM = '\uFEFF';
+  const header = ['日付','支払方法','カテゴリ','メモ','金額'];
+  const rows = all.map(e=>[
+    e.date,
+    PAY_LABELS[e.pay]||e.pay,
+    e.cat,
+    e.memo||'',
+    e.amount
+  ]);
+  const csv = BOM + [header, ...rows].map(r=>
+    r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')
+  ).join('\r\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'kakeibo_'+currentYear+String(currentMonth+1).padStart(2,'0')+'.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 function buildBudgetInputs(){
   const wrap=document.getElementById('budget-inputs');
   if(!wrap) return;
@@ -461,7 +589,8 @@ function renderLog(containerId,filtered){
       <span><span class="tag ${PAY_TAG[e.pay]}">${PAY_LABELS[e.pay]}</span></span>
       <span style="font-size:12px;">${e.cat}${e.memo?' · '+e.memo:''}</span>
       <span style="text-align:right;font-weight:600;">${fmt(e.amount)}</span>
-      <button class="del-btn" onclick="deleteEntry(${e.id})">✕</button>`;
+      <button class="edit-btn" onclick="editEntry(${e.id})" title="修正">✏</button>
+      <button class="del-btn" onclick="deleteEntry(${e.id})" title="削除">✕</button>`;
     el.appendChild(row);
   });
 }
