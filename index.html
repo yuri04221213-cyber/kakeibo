@@ -101,6 +101,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
 </head>
 <body>
 
+
 <!-- 家計ID設定画面 -->
 <div class="setup-overlay" id="setup-overlay">
   <div class="setup-box">
@@ -111,6 +112,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <button class="start-btn" onclick="startApp()">開始する</button>
   </div>
 </div>
+
 
 <!-- 編集モーダル -->
 <div class="modal-overlay" id="edit-modal" style="display:none">
@@ -131,7 +133,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
           <option value="日用品">日用品</option>
           <option value="プレゼント">プレゼント</option>
           <option value="オフ会等">オフ会等</option>
-          <option value="医者代">医者代</option>
+          <option value="医者代その他">医者代その他</option>
         </optgroup>
         <optgroup label="固定費">
           <option value="美容院">美容院・湘南美容</option>
@@ -169,6 +171,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
   </div>
 </div>
 
+
 <!-- メインアプリ -->
 <div id="app-wrap" style="display:none">
 <div class="header">
@@ -184,6 +187,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
   </div>
 </div>
 
+
 <div class="main">
   <div class="sum-row">
     <div class="scard"><div class="scard-label">食費</div><div class="scard-val" id="s-food" style="color:#1D9E75">¥0</div></div>
@@ -192,7 +196,9 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <div class="scard"><div class="scard-label">支出合計</div><div class="scard-val" id="s-total">¥0</div></div>
   </div>
 
+
   <div id="budget-bars" class="budget-grid"></div>
+
 
   <div class="tabs">
     <div class="tab active" onclick="switchTab('all',this)">すべて</div>
@@ -204,6 +210,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <div class="tab" onclick="switchTab('carddetail',this)">カード明細</div>
     <div class="tab" onclick="switchTab('budget',this)">予算設定</div>
   </div>
+
 
   <div id="panel-all" class="panel active">
     <div class="form-box">
@@ -220,7 +227,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
             <option value="日用品">日用品</option>
             <option value="プレゼント">プレゼント</option>
             <option value="オフ会等">オフ会等</option>
-            <option value="医者代">医者代</option>
+            <option value="医者代その他">医者代その他</option>
           </optgroup>
           <optgroup label="固定費">
             <option value="美容院">美容院・湘南美容</option>
@@ -257,6 +264,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     </div>
   </div>
 
+
   <div id="panel-card" class="panel">
     <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-card"></div></div>
   </div>
@@ -273,6 +281,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     <div class="log-box"><div class="log-head"><span>日付</span><span>支払</span><span>カテゴリ／メモ</span><span style="text-align:right">金額</span><span></span><span></span></div><div id="log-point"></div></div>
   </div>
 
+
   <div id="panel-carddetail" class="panel">
     <div class="form-box">
       <div class="form-title">カード引落予定明細（月次）</div>
@@ -284,6 +293,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
     </div>
   </div>
 
+
   <div id="panel-budget" class="panel">
     <div class="form-box">
       <div class="form-title">毎月予算を設定</div>
@@ -293,9 +303,11 @@ select:focus,input:focus{outline:none;border-color:#888;}
 </div>
 </div><!-- /app-wrap -->
 
+
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
 
 <script>
 // ============================================================
@@ -313,13 +325,15 @@ const firebaseConfig = {
 };
 // ============================================================
 
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+
 
 const CATS=[
   {key:'食費',group:'食費'},{key:'遊興費',group:'変動費'},{key:'化粧品',group:'変動費'},
   {key:'日用品',group:'変動費'},{key:'プレゼント',group:'変動費'},{key:'オフ会等',group:'変動費'},
-  {key:'医者代',group:'変動費'},
+  {key:'医者代その他',group:'変動費'},
   {key:'美容院',group:'固定費'},{key:'電気代',group:'固定費'},{key:'スマート光',group:'固定費'},
   {key:'スマホ',group:'固定費'},{key:'サブスク',group:'固定費'},{key:'ガソリン灯油',group:'固定費'},
   {key:'水道代',group:'固定費'},{key:'ガス代',group:'固定費'},{key:'アパート代',group:'固定費'},
@@ -327,7 +341,7 @@ const CATS=[
 ];
 const DEFAULT_BUDGETS={
   '食費':28000,'遊興費':5000,'化粧品':5500,'日用品':0,'プレゼント':4000,
-  'オフ会等':0,'医者代':0,'美容院':16000,'電気代':21000,'スマート光':7500,'スマホ':3300,
+  'オフ会等':0,'医者代その他':0,'美容院':16000,'電気代':21000,'スマート光':7500,'スマホ':3300,
   'サブスク':10000,'ガソリン灯油':7000,'水道代':4200,'ガス代':8000,
   'アパート代':35000,'インデックス':30000
 };
@@ -335,10 +349,12 @@ const CARD_ITEMS=['歯医者','健康診断','プライム','ユーチューブ'
 const PAY_LABELS={card:'カード',cash:'現金',paypay:'PayPay',bank:'引落',point:'ポイント'};
 const PAY_TAG={card:'tag-card',cash:'tag-cash',paypay:'tag-paypay',bank:'tag-bank',point:'tag-point'};
 
+
 let currentYear, currentMonth;
 let entries=[], budgets={...DEFAULT_BUDGETS}, cardItems={}, cardChecked={};
 let householdId = localStorage.getItem('kakeibo_household_id') || '';
 let dbListener = null;
+
 
 // 同期ドットの状態
 function setSyncState(state){
@@ -348,9 +364,11 @@ function setSyncState(state){
   dot.title = state==='synced' ? '同期済み' : state==='syncing' ? '同期中...' : 'オフライン';
 }
 
+
 function getRef(path){
   return db.ref('households/' + householdId + '/' + path);
 }
+
 
 function save(){
   if(!householdId) return;
@@ -365,6 +383,7 @@ function save(){
     .then(()=>setSyncState('synced'))
     .catch(()=>setSyncState('offline'));
 }
+
 
 function startRealtimeSync(){
   if(dbListener) dbListener();
@@ -381,6 +400,7 @@ function startRealtimeSync(){
   }, ()=>setSyncState('offline'));
 }
 
+
 function startApp(){
   const input = document.getElementById('hid-input').value.trim();
   if(!input){ alert('家計IDを入力してください'); return; }
@@ -392,6 +412,7 @@ function startApp(){
   initApp();
 }
 
+
 function changeHousehold(){
   if(!confirm('家計IDを変更しますか？\n（このデバイスのIDが変わります）')) return;
   if(dbListener){ db.ref('households/' + householdId).off('value', dbListener); dbListener=null; }
@@ -400,6 +421,7 @@ function changeHousehold(){
   document.getElementById('app-wrap').style.display = 'none';
 }
 
+
 function initApp(){
   const now = new Date();
   currentYear = now.getFullYear();
@@ -407,6 +429,7 @@ function initApp(){
   document.getElementById('f-date').value = now.toISOString().slice(0,10);
   startRealtimeSync();
 }
+
 
 function init(){
   if(householdId){
@@ -418,6 +441,7 @@ function init(){
     document.getElementById('setup-overlay').style.display = '';
   }
 }
+
 
 function changeMonth(d){
   currentMonth+=d;
@@ -434,6 +458,7 @@ function switchTab(id,el){
 }
 function fmt(n){return '¥'+Math.round(n).toLocaleString('ja-JP');}
 
+
 function getFiltered(payFilter){
   return entries.filter(e=>{
     const d=new Date(e.date);
@@ -443,6 +468,7 @@ function getFiltered(payFilter){
     return true;
   });
 }
+
 
 function addEntry(){
   const date=document.getElementById('f-date').value;
@@ -458,10 +484,12 @@ function addEntry(){
   save();
 }
 
+
 function deleteEntry(id){
   if(!confirm('この記録を削除しますか？'))return;
   entries=entries.filter(e=>e.id!==id); save();
 }
+
 
 // 修正機能
 function editEntry(id){
@@ -475,6 +503,7 @@ function editEntry(id){
   document.getElementById('edit-memo').value = e.memo||'';
   document.getElementById('edit-modal').style.display = 'flex';
 }
+
 
 function saveEdit(){
   const id = parseInt(document.getElementById('edit-id').value);
@@ -492,9 +521,11 @@ function saveEdit(){
   save();
 }
 
+
 function cancelEdit(){
   document.getElementById('edit-modal').style.display = 'none';
 }
+
 
 // CSVダウンロード
 function downloadCSV(){
@@ -521,6 +552,7 @@ function downloadCSV(){
   URL.revokeObjectURL(url);
 }
 
+
 function buildBudgetInputs(){
   const wrap=document.getElementById('budget-inputs');
   if(!wrap) return;
@@ -537,6 +569,7 @@ function buildBudgetInputs(){
   });
 }
 
+
 function setBudget(key,val,slider){
   budgets[key]=parseInt(val)||0;
   const num=slider.parentElement.querySelector('input[type=number]');
@@ -549,6 +582,7 @@ function setBudgetNum(key,val){
   CATS.forEach((c,i)=>{if(c.key===key&&rows[i])rows[i].querySelector('input[type=range]').value=budgets[key];});
   save(); render();
 }
+
 
 function buildCardDetail(){
   const grid=document.getElementById('cd-grid');
@@ -576,6 +610,7 @@ function updateCardTotal(){
   if(el) el.textContent=fmt(t);
 }
 
+
 function renderLog(containerId,filtered){
   const el=document.getElementById(containerId);
   if(!el)return;
@@ -594,6 +629,7 @@ function renderLog(containerId,filtered){
     el.appendChild(row);
   });
 }
+
 
 function render(){
   const monthLabel = document.getElementById('month-label');
@@ -614,22 +650,24 @@ function render(){
   document.getElementById('s-fix').textContent=fmt(fixed);
   document.getElementById('s-total').textContent=fmt(food+variable+fixed+saving);
 
+
   const bars=document.getElementById('budget-bars');
   bars.innerHTML='';
-  CATS.filter(c=>budgets[c.key]>0).forEach(c=>{
+  CATS.filter(c=>budgets[c.key]>0||c.key==='日用品'||c.key==='医者代その他').forEach(c=>{
     const spent=all.filter(e=>e.cat===c.key).reduce((a,e)=>a+e.amount,0);
     const bud=budgets[c.key];
-    const pct=Math.min(100,Math.round(spent/bud*100));
+    const pct=bud>0?Math.min(100,Math.round(spent/bud*100)):0;
     const rem=bud-spent;
-    const cls=pct>=100?'over':pct>=80?'warn':'ok';
-    const fillCls=pct>=100?'fill-over':pct>=80?'fill-warn':'fill-ok';
+    const cls=bud===0?'ok':pct>=100?'over':pct>=80?'warn':'ok';
+    const fillCls=bud===0?'fill-ok':pct>=100?'fill-over':pct>=80?'fill-warn':'fill-ok';
     const div=document.createElement('div');
     div.className='bcard';
-    div.innerHTML=`<div class="bcard-top"><span class="bcat">${c.key}</span><span class="bamount ${cls}">${fmt(spent)} / ${fmt(bud)}</span></div>
+    div.innerHTML=`<div class="bcard-top"><span class="bcat">${c.key}</span><span class="bamount ${cls}">${bud>0?fmt(spent)+' / '+fmt(bud):fmt(spent)}</span></div>
       <div class="btrack"><div class="bfill ${fillCls}" style="width:${pct}%"></div></div>
-      <div class="brem ${cls}">${rem>=0?'残り '+fmt(rem):'超過 '+fmt(-rem)}</div>`;
+      <div class="brem ${cls}">${bud===0?'予算未設定':rem>=0?'残り '+fmt(rem):'超過 '+fmt(-rem)}</div>`;
     bars.appendChild(div);
   });
+
 
   renderLog('log-all',all);
   renderLog('log-card',getFiltered('card'));
@@ -639,10 +677,12 @@ function render(){
   renderLog('log-point',getFiltered('point'));
 }
 
+
 // Enterキーで開始
 document.getElementById('hid-input').addEventListener('keydown', e=>{
   if(e.key==='Enter') startApp();
 });
+
 
 init();
 </script>
