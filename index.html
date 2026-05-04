@@ -40,7 +40,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .form-box{background:#fff;border:1px solid #e5e5e0;border-radius:10px;padding:14px;margin-bottom:12px;}
 .form-title{font-size:11px;color:#888;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
 .frow{display:grid;gap:6px;margin-bottom:6px;}
-.frow-4{grid-template-columns;88px 1fr 110px 68px;}
+.frow-4{grid-template-columns:88px 1fr 110px 68px;}
 .frow-2{grid-template-columns:1fr 1fr;}
 .frow-1{grid-template-columns:1fr;}
 select,input[type=text],input[type=number],input[type=date]{width:100%;height:33px;padding:0 8px;border:1px solid #d0d0c8;border-radius:6px;background:#fafaf8;color:#1a1a1a;font-size:13px;}
@@ -103,7 +103,7 @@ select:focus,input:focus{outline:none;border-color:#888;}
   .sum-row{grid-template-columns:1fr 1fr;}
   .budget-grid{grid-template-columns:1fr;}
   .frow-4{grid-template-columns:1fr 1fr;}
-  .log-head,.log-row{grid-template-columns:35px 1fr 80px 28px 28px;}
+  .log-head,.log-row{grid-template-columns:50px 1fr 80px 24px 24px;}
   .log-head span:nth-child(2),.log-row span:nth-child(2){display:none;}
 }
 </style>
@@ -115,16 +115,82 @@ select:focus,input:focus{outline:none;border-color:#888;}
   <div class="setup-box">
     <h2>💰 家計管理</h2>
     <p>家計IDを決めてください</p>
-    <p class="note">同じIDをスマホ・他のPCで入力すると������8���c:!�b�x�i�d#9�'��ex�8�o��fO���[�]\OH�^�YH�YZ[�]�X�Z�\�H�/���&��ؘ^X\�L���X^[��H�����]ۈ�\��H��\�X���ۘ�X��H��\�\
+    <p class="note">同じIDをスマホ・他のPCで入力すると<br>データが自動で同期されます</p>
+    <input type="text" id="hid-input" placeholder="例：kobayashi2024" maxlength="40">
+    <button class="start-btn" onclick="startApp()">開始する</button>
+  </div>
+</div>
 
-H��e��i���fx��؝]ۏ���]����]����KKH9��:f�����8��8���KO��]��\��H�[�[[ݙ\�^H�YH�Y][[�[��[OH�\�^N��ۙH���]��\��H�[�[X�����]��\��H�[�[]]H��*&:c,�ह/빫h��]���[�]\OH�Y[��YH�Y]ZY���]��\��H���������LH���[�]\OH�]H�YH�Y]Y]H����]���]��\��H���������LH����[X�YH�Y]X�]����ܛ�\X�[H�h��,�ȏ���[ۈ�[YOH�h��,�ȏ�h��,����[ۏ����ܛ�\���ܛ�\X�[H�i"yb�z,�ȏ���[ۈ�[YOH�`b�"":,�����(h�hg����i%�h�ȏ�`b�"":,�����(h�hg����i%�h����[ۏ���[ۈ�[YOH���y�*9d�x���c%���d�H����y�*9d�x���c%���d�O��[ۏ���[ۈ�[YOH������8�8������������8�8�������[ۏ���[ۈ�[YOH�સ��y/&��bH��સ��y/&��bO��[ۏ���[ۈ�[YOH�c.� !y.�ȏ�c.� !y.����[ۏ���[ۈ�[YOH��nyb)z,�ȏ��nyb)z,����[ۏ����ܛ�\���ܛ�\X�[H�f�k��,�ȏ���[ۈ�[YOH�k�zfh���k�zfh�����f9ce�k�O��[ۏ���[ۈ�[YOH�f���%�.�ȏ�f���%�.����[ۏ���[ۈ�[YOH��x����8��9abH���x����8��9ab{�":`&�/�z,���"O��[ۏ���[ۈ�[YOH��x����ȏ��x�������[ۏ���[ۈ�[YOH��x���x�ȏ��x���x����[ۏ���[ۈ�[YOH��8�x������k���H���8�x���������k���O��[ۏ���[ۈ�[YOH��-:`d�.�ȏ��-:`d�.����[ۏ���[ۈ�[YOH��8�y.�ȏ��8�y.����[ۏ���[ۈ�[YOH�ਸ��x��8��9.�ȏ�ਸ��x��8��9.����[ۏ����ܛ�\���ܛ�\X�[H��cy��ȏ���[ۈ�[YOH��cy��ӒT�H���cy��ӒT�O��[ۏ���[ۈ�[YOH�.�9`�z,�ȏ�.�9`�z,���":.⹩'8���!�b�z.��#��b{�"O��[ۏ���[ۈ�[YOH��f9ce�k�H9�cy��ȏ��f9ce�k�H9�cy�����[ۏ���[ۈ�[YOH���z(c:,���*����z(c:,���*��[ۏ���[ۈ�[YOH�k��f�����k��amȏ�k��f�����k��am���[ۏ���[ۈ�[YOH�aizfh����.��+m�,�ȏ�aizfh����.��+m�,����[ۏ����ܛ�\����[X����]���]��\��H���������L�����[X�YH�Y]\^H����[ۈ�[YOH��\�������8��O��[ۏ���[ۈ�[YOH��\�����a�O��[ۏ���[ۈ�[YOH�^\^H��^T^O��[ۏ���[ۈ�[YOH��[�ȏ�o%z$/O��[ۏ���[ۈ�[YOH��[�����x�8�������[ۏ����[X���[�]\OH��[X�\��YH�Y]X[[�[��X�Z�\�H�a�zhc{�"9a���"H�Z[�H�����]���]��\��H���������LH���[�]\OH�^�YH�Y][Y[[ȈX�Z�\�H���x���"9n��d#x�j��j{�"H����]���]��\��H�[�[X��ȏ���]ۈ�\��H�[�[X��\�]�H�ۘ�X��H��]�QY]
+<!-- 編集モーダル -->
+<div class="modal-overlay" id="edit-modal" style="display:none">
+  <div class="modal-box">
+    <div class="modal-title">記録を修正</div>
+    <input type="hidden" id="edit-id">
+    <div class="frow frow-1">
+      <input type="date" id="edit-date">
+    </div>
+    <div class="frow frow-1">
+      <select id="edit-cat">
+        <optgroup label="食費">
+          <option value="食費">食費</option>
+        </optgroup>
+        <optgroup label="変動費">
+          <option value="遊興費・衣類・外食">遊興費・衣類・外食</option>
+          <option value="日用品・化粧品">日用品・化粧品</option>
+          <option value="プレゼント">プレゼント</option>
+          <option value="オフ会等">オフ会等</option>
+          <option value="医者代">医者代</option>
+          <option value="特別費">特別費</option>
+        </optgroup>
+        <optgroup label="固定費">
+          <option value="美容院">美容院・湘南美容</option>
+          <option value="電気代">電気代</option>
+          <option value="スマート光">スマート光（通信費）</option>
+          <option value="スマホ">スマホ</option>
+          <option value="サブスク">サブスク</option>
+          <option value="ガソリン灯油">ガソリン・灯油</option>
+          <option value="水道代">水道代</option>
+          <option value="ガス代">ガス代</option>
+          <option value="アパート代">アパート代</option>
+        </optgroup>
+        <optgroup label="積立">
+          <option value="積立NISA">積立NISA</option>
+          <option value="予備費">予備費（車検・自動車税等）</option>
+          <option value="湘南美容 積立">湘南美容 積立</option>
+          <option value="旅行費用">旅行費用</option>
+          <option value="家電・家具">家電・家具</option>
+          <option value="入院・介護費">入院・介護費</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="frow frow-2">
+      <select id="edit-pay">
+        <option value="card">カード</option>
+        <option value="cash">現金</option>
+        <option value="paypay">PayPay</option>
+        <option value="bank">引落</option>
+        <option value="point">ポイント</option>
+      </select>
+      <input type="number" id="edit-amount" placeholder="金額（円）" min="0">
+    </div>
+    <div class="frow frow-1">
+      <input type="text" id="edit-memo" placeholder="メモ（店名など）">
+    </div>
+    <div class="modal-btns">
+      <button class="modal-btn-save" onclick="saveEdit()">保存</button>
+      <button class="modal-btn-cancel" onclick="cancelEdit()">キャンセル</button>
+    </div>
+  </div>
+</div>
 
-H��/�ykf؝]ۏ���]ۈ�\��H�[�[X��X�[��[�ۘ�X��H��[��[Y]
-
-H���x�����������؝]ۏ���]����]����]����KKH8��x�8���ਸ�����KO��]�YH�\]ܘ\��[OH�\�^N��ۙH���]��\��H�XY\����O�'�9k��*"9�y�!��O���[��\��H�YX�Y�H�YH�Y[X�[�ۘ�X��H��[��R�\�Z�
-
-H�]OH�k��*"Q8हi"y������[����[��\��H��[��Y��YH��[��Y��]OH�d#9�'�⭹�bȏ���[���]��\��H�[۝[�]�����]ۈ�\��H��]�X���ۘ�X��H��[��S[۝
-LJH�‹</button>
+<!-- メインアプリ -->
+<div id="app-wrap" style="display:none">
+<div class="header">
+  <h1>💰 家計管理</h1>
+  <span class="hid-badge" id="hid-label" onclick="changeHousehold()" title="家計IDを変更"></span>
+  <span class="sync-dot" id="sync-dot" title="同期状態"></span>
+  <div class="month-nav">
+    <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
     <span id="month-label"></span>
     <button class="nav-btn" onclick="changeMonth(1)">›</button>
     <button class="nav-btn today-btn" onclick="goToday()">今月</button>
@@ -256,7 +322,7 @@ H�]OH�k��*"Q8हi"y������[����[��\
       <div class="form-title">カード引落予定（固定費登録）</div>
       <div class="cd-grid" id="cd-grid"></div>
       <div class="cd-total-row">
-        <span style="color:#666;font-size:13px;">固定費明細合計</span>
+        <span style="color:#777;font-size:13px;">固定費明細合計</span>
         <span style="font-weight:600;font-size:15px;margin-left:auto;" id="cd-total">¥0</span>
       </div>
     </div>
@@ -277,7 +343,7 @@ H�]OH�k��*"Q8हi"y������[����[��\
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyCTnmAT2pAIidrwZge8bZGLXiXhxszie9g",
+  apiKey: "AIzaSyCTnmAT2"+"pAIidrwZge8bZGLXiXhxszie9g",
   authDomain: "kakeibo-a27ad.firebaseapp.com",
   databaseURL: "https://kakeibo-a27ad-default-rtdb.firebaseio.com",
   projectId: "kakeibo-a27ad",
@@ -606,7 +672,7 @@ function renderCardDetail(){
         const pct=cardTotal>0?Math.round(amt/cardTotal*100):0;
         const div=document.createElement('div');
         div.className='bcard';
-        div.innerHTML=`<div class="bcard-top"><span class="bcat">${key}</span><span class="bamount">${fmt(amt)}</span></div>
+        div.innerHTML<`<div class="bcard-top"><span class="bcat">${key}</span><span class="bamount">${fmt(amt)}</span></div>
           <div class="btrack"><div class="bfill fill-ok" style="width:${pct}%"></div></div>
           <div class="brem" style="color:#888">${pct}%</div>`;
         catBars.appendChild(div);
@@ -626,7 +692,7 @@ function renderLog(containerId,filtered){
     const row=document.createElement('div');
     row.className='log-row';
     const d=e.date.slice(5).replace('-','/');
-    row.innerHTML<`<span style="color:#888;font-size:11px;">${d}</span>
+    row.innerHTML=`<span style="color:#888;font-size:11px;">${d}</span>
       <span><span class="tag ${PAY_TAG[e.pay]||'tag-cash'}">${PAY_LABELS[e.pay]||e.pay}</span></span>
       <span style="font-size:12px;">${e.cat}${e.memo?' · '+e.memo:''}</span>
       <span style="text-align:right;font-weight:600;">${fmt(e.amount)}</span>
@@ -639,7 +705,7 @@ function renderLog(containerId,filtered){
 function render(){
   const monthLabel = document.getElementById('month-label');
   if(!monthLabel) return;
-  monthLabel.textContent=`${currentYear}年${currentMonth+1}月`;
+  monthLabel.textContent=`${currentYear}�t${currentMonth+1}月`;
   const all=getFiltered('all');
   let food=0,variable=0,fixed=0,saving=0;
   all.forEach(e=>{
@@ -676,7 +742,7 @@ function render(){
       const fillCls=pct>=100?'fill-over':pct>=80?'fill-warn':'fill-ok';
       const div=document.createElement('div');
       div.className='bcard';
-      div.innerHTML=`<div class="bcard-top"><span class="bcat">${c.key}</span><span class="bamount ${cls}">${fmt(spent)} / ${fmt(bud)}</span></div>
+      div.innerHTML<`<div class="bcard-top"><span class="bcat">${c.key}</span><span class="bamount ${cls}">${fmt(spent)} / ${fmt(bud)}</span></div>
         <div class="btrack"><div class="bfill ${fillCls}" style="width:${pct}%"></div></div>
         <div class="brem ${cls}">${rem>=0?'残り '+fmt(rem):'超過 '+fmt(-rem)}</div>`;
       bars.appendChild(div);
