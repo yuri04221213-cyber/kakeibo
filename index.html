@@ -592,6 +592,7 @@ function changeMonth(delta) {
   const allBtn = document.querySelector('.filter-btn[onclick*="all"]');
   if (allBtn) allBtn.classList.add('active');
   render();
+  renderCard();
 }
 
 // 初期日付
