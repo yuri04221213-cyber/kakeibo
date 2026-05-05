@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>å®¶è¨ç®¡ç 5æ</title>
+<title>家計管理 5月</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
 
@@ -36,7 +36,7 @@
     padding-bottom: 60px;
   }
 
-  /* ãããã¼ */
+  /* ヘッダー */
   header {
     background: #1E293B;
     color: white;
@@ -62,7 +62,7 @@
   }
   .month-nav button:hover { background: rgba(255,255,255,0.25); }
 
-  /* ãã¼ã¸ãã */
+  /* ページナビ */
   .page-nav {
     display: flex;
     gap: 4px;
@@ -89,11 +89,11 @@
 
   .container { max-width: 900px; margin: 0 auto; padding: 16px 16px 0; }
 
-  /* ãã¼ã¸åãæ¿ã */
+  /* ページ切り替え */
   .page { display: none; }
   .page.active { display: block; }
 
-  /* ãµããªã¼ã«ã¼ã */
+  /* サマリーカード */
   .summary-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -113,7 +113,7 @@
   .summary-card.fixed .value   { color: var(--blue); }
   .summary-card.total .value   { color: var(--text); }
 
-  /* ã«ãã´ãªã°ãªãã */
+  /* カテゴリグリッド */
   .cat-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -141,7 +141,7 @@
   .cat-status.warn { color: var(--orange); }
   .cat-status.none { color: var(--text-sub); }
 
-  /* ã¿ã */
+  /* タブ */
   .tabs-wrap { background: var(--card); border-radius: 12px 12px 0 0; box-shadow: var(--shadow); }
   .tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--border); padding: 0 12px; scrollbar-width: none; }
   .tabs::-webkit-scrollbar { display: none; }
@@ -153,7 +153,7 @@
   .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
   .tab:hover:not(.active) { color: var(--text); }
 
-  /* å¥åãã©ã¼ã  */
+  /* 入力フォーム */
   .add-form { background: var(--card); border-radius: 0 0 12px 12px; padding: 14px 16px; box-shadow: var(--shadow); margin-bottom: 12px; }
   .add-form-label { font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
   .form-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
@@ -175,7 +175,7 @@
   }
   .btn-add:hover { background: #334155; }
 
-  /* æç´°ãªã¹ã */
+  /* 明細リスト */
   .records-wrap { background: var(--card); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
   .record-item {
     display: flex; align-items: center; padding: 11px 16px;
@@ -208,7 +208,7 @@
   .record-edit:hover { color: var(--blue); background: var(--blue-bg); }
   .no-records { text-align: center; padding: 32px; color: var(--text-sub); font-size: 13px; }
 
-  /* ç·¨éã¢ã¼ãã« */
+  /* 編集モーダル */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.45); z-index: 200;
@@ -233,7 +233,7 @@
   .btn-save:hover { background: #334155; }
   .btn-cancel { padding: 10px 16px; background: none; border: 1.5px solid var(--border); border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; }
 
-  /* ã»ããã¢ããç»é¢ */
+  /* セットアップ画面 */
   .setup-overlay {
     position: fixed; inset: 0; background: var(--bg);
     display: flex; align-items: center; justify-content: center; z-index: 300;
@@ -256,7 +256,7 @@
     cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
   }
   .setup-box button:hover { background: #334155; }
-  /* åæããã */
+  /* 同期ドット */
   .sync-dot {
     width: 8px; height: 8px; border-radius: 50%; background: #9CA3AF;
     display: inline-block; margin-left: 6px; vertical-align: middle;
@@ -265,7 +265,7 @@
   .sync-dot.syncing { background: #F59E0B; }
 
   /* ========================================
-     ã«ã¼ãæç´°ãã¼ã¸
+     カード明細ページ
   ======================================== */
   .card-summary-grid {
     display: grid;
@@ -290,7 +290,7 @@
     margin: 0 0 10px; letter-spacing: 0.04em; text-transform: uppercase;
   }
 
-  /* ã«ãã´ãªå¥ã«ã¼ãæãåè¨³ */
+  /* カテゴリ別カード払い内訳 */
   .card-cat-list {
     background: var(--card);
     border-radius: 12px;
@@ -309,7 +309,7 @@
   .card-cat-bar { height: 100%; background: #93C5FD; border-radius: 3px; }
   .card-cat-amt { font-size: 14px; font-weight: 700; font-family: 'DM Sans', sans-serif; color: #1D4ED8; width: 90px; text-align: right; }
 
-  /* ã«ã¼ãæç´°ãã¼ãã« */
+  /* カード明細テーブル */
   .card-records-wrap {
     background: var(--card);
     border-radius: 12px;
@@ -360,56 +360,56 @@
 <body>
 
 <header>
-  <h1>ð° å®¶è¨ç®¡ç</h1>
+  <h1>💰 家計管理</h1>
   <div class="header-right">
     <div class="page-nav">
-      <button class="page-btn active" onclick="showPage('main', this)">ð å®¶è¨ç°¿</button>
-      <button class="page-btn" onclick="showPage('card', this)">ð³ ã«ã¼ãæç´°</button>
+      <button class="page-btn active" onclick="showPage('main', this)">📊 家計簿</button>
+      <button class="page-btn" onclick="showPage('card', this)">💳 カード明細</button>
     </div>
     <div class="month-nav">
-      <button onclick="changeMonth(-1)">â¹</button>
-      <span id="monthLabel">2026å¹´5æ</span>
-      <button onclick="changeMonth(1)">âº</button>
+      <button onclick="changeMonth(-1)">‹</button>
+      <span id="monthLabel">2026年5月</span>
+      <button onclick="changeMonth(1)">›</button>
     </div>
   </div>
 </header>
 
 
-<!-- ç·¨éã¢ã¼ãã« -->
+<!-- 編集モーダル -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
-    <h3>âï¸ è¨é²ãä¿®æ­£</h3>
-    <div class="field"><label>æ¥ä»</label><input type="date" id="eDate"></div>
-    <div class="field"><label>åç®</label><input type="text" id="eName" placeholder="åç®ï¼ä¾ï¼æ¥­åã¹ã¼ãã¼ï¼"></div>
-    <div class="field"><label>ã«ãã´ãª</label>
+    <h3>✏️ 記録を修正</h3>
+    <div class="field"><label>日付</label><input type="date" id="eDate"></div>
+    <div class="field"><label>品目</label><input type="text" id="eName" placeholder="品目（例：業務スーパー）"></div>
+    <div class="field"><label>カテゴリ</label>
       <select id="eCat">
-        <option>é£è²»</option>
-        <option>æ¥ç¨åã»åç²§å</option>
-        <option>éèè²»ã»è¡£é¡ã»å¤é£</option>
-        <option>ã¬ã½ãªã³ã»ç¯æ²¹</option>
-        <option>ç¾å®¹é¢ã»æ¹å</option>
-        <option>ãµãã¹ã¯</option>
-        <option>éä¿¡è²»</option>
-        <option>é»æ°ã»ã¬ã¹ã»æ°´é</option>
-        <option>å®¶è³</option>
-        <option>å»çè²»ã»äºå</option>
-        <option>è²¯èã»ç©ç«</option>
-        <option>ç¹å¥è²»</option>
-        <option>ãã®ä»</option>
+        <option>食費</option>
+        <option>日用品・化粧品</option>
+        <option>遊興費・衣類・外食</option>
+        <option>ガソリン・灯油</option>
+        <option>美容院・湘南</option>
+        <option>サブスク</option>
+        <option>通信費</option>
+        <option>電気・ガス・水道</option>
+        <option>家賃</option>
+        <option>医療費・予備</option>
+        <option>貯蓄・積立</option>
+        <option>特別費</option>
+        <option>その他</option>
       </select>
     </div>
-    <div class="field"><label>æ¯ææ¹æ³</label>
+    <div class="field"><label>支払方法</label>
       <select id="ePay">
-        <option>ã«ã¼ã</option>
-        <option>ç¾é</option>
+        <option>カード</option>
+        <option>現金</option>
         <option>PayPay</option>
-        <option>å¼è½</option>
+        <option>引落</option>
       </select>
     </div>
-    <div class="field"><label>éé¡ï¼åï¼</label><input type="number" id="eAmt" min="0"></div>
+    <div class="field"><label>金額（円）</label><input type="number" id="eAmt" min="0"></div>
     <div class="modal-btns">
-      <button class="btn-save" onclick="saveEdit()">ä¿å­</button>
-      <button class="btn-cancel" onclick="closeEdit()">ã­ã£ã³ã»ã«</button>
+      <button class="btn-save" onclick="saveEdit()">保存</button>
+      <button class="btn-cancel" onclick="closeEdit()">キャンセル</button>
     </div>
   </div>
 </div>
@@ -417,26 +417,26 @@
 <div class="container">
 
   <!-- ==============================
-       ãã¼ã¸1: å®¶è¨ç°¿ã¡ã¤ã³
+       ページ1: 家計簿メイン
   ============================== -->
   <div class="page active" id="page-main">
 
     <div class="summary-grid">
       <div class="summary-card income">
-        <div class="label">æåå¥</div>
-        <div class="value" id="summaryIncome">Â¥170,000</div>
+        <div class="label">月収入</div>
+        <div class="value" id="summaryIncome">¥170,000</div>
       </div>
       <div class="summary-card variable">
-        <div class="label">å¤åè²»</div>
-        <div class="value" id="summaryVariable">Â¥0</div>
+        <div class="label">変動費</div>
+        <div class="value" id="summaryVariable">¥0</div>
       </div>
       <div class="summary-card fixed">
-        <div class="label">åºå®è²»</div>
-        <div class="value" id="summaryFixed">Â¥0</div>
+        <div class="label">固定費</div>
+        <div class="value" id="summaryFixed">¥0</div>
       </div>
       <div class="summary-card total">
-        <div class="label">æ¯åºåè¨</div>
-        <div class="value" id="summaryTotal">Â¥0</div>
+        <div class="label">支出合計</div>
+        <div class="value" id="summaryTotal">¥0</div>
       </div>
     </div>
 
@@ -444,42 +444,42 @@
 
     <div class="tabs-wrap">
       <div class="tabs">
-        <div class="tab active" onclick="filterTab('all',this)">ãã¹ã¦</div>
-        <div class="tab" onclick="filterTab('ã«ã¼ã',this)">ã«ã¼ã</div>
-        <div class="tab" onclick="filterTab('ç¾é',this)">ç¾é</div>
+        <div class="tab active" onclick="filterTab('all',this)">すべて</div>
+        <div class="tab" onclick="filterTab('カード',this)">カード</div>
+        <div class="tab" onclick="filterTab('現金',this)">現金</div>
         <div class="tab" onclick="filterTab('PayPay',this)">PayPay</div>
-        <div class="tab" onclick="filterTab('å¼è½',this)">å¼è½</div>
+        <div class="tab" onclick="filterTab('引落',this)">引落</div>
       </div>
       <div class="add-form">
-        <div class="add-form-label">è¨é²ãè¿½å </div>
+        <div class="add-form-label">記録を追加</div>
         <div class="form-row">
           <input type="date" id="fDate">
-          <input type="text" id="fName" placeholder="åç®ï¼ä¾ï¼æ¥­åã¹ã¼ãã¼ï¼">
+          <input type="text" id="fName" placeholder="品目（例：業務スーパー）">
           <select id="fCat">
-            <option value="">ã«ãã´ãª</option>
-            <option>é£è²»</option>
-            <option>æ¥ç¨åã»åç²§å</option>
-            <option>éèè²»ã»è¡£é¡ã»å¤é£</option>
-            <option>ã¬ã½ãªã³ã»ç¯æ²¹</option>
-            <option>ç¾å®¹é¢ã»æ¹å</option>
-            <option>ãµãã¹ã¯</option>
-            <option>éä¿¡è²»</option>
-            <option>é»æ°ã»ã¬ã¹ã»æ°´é</option>
-            <option>å®¶è³</option>
-            <option>å»çè²»ã»äºå</option>
-            <option>è²¯èã»ç©ç«</option>
-            <option>ç¹å¥è²»</option>
-            <option>ãã®ä»</option>
+            <option value="">カテゴリ</option>
+            <option>食費</option>
+            <option>日用品・化粧品</option>
+            <option>遊興費・衣類・外食</option>
+            <option>ガソリン・灯油</option>
+            <option>美容院・湘南</option>
+            <option>サブスク</option>
+            <option>通信費</option>
+            <option>電気・ガス・水道</option>
+            <option>家賃</option>
+            <option>医療費・予備</option>
+            <option>貯蓄・積立</option>
+            <option>特別費</option>
+            <option>その他</option>
           </select>
           <select id="fPay">
-            <option value="">æ¯ææ¹æ³</option>
-            <option>ã«ã¼ã</option>
-            <option>ç¾é</option>
+            <option value="">支払方法</option>
+            <option>カード</option>
+            <option>現金</option>
             <option>PayPay</option>
-            <option>å¼è½</option>
+            <option>引落</option>
           </select>
-          <input type="number" id="fAmt" placeholder="éé¡ï¼åï¼" min="0">
-          <button class="btn-add" onclick="addRecord()">ï¼è¿½å </button>
+          <input type="number" id="fAmt" placeholder="金額（円）" min="0">
+          <button class="btn-add" onclick="addRecord()">＋追加</button>
         </div>
       </div>
     </div>
@@ -488,45 +488,45 @@
   </div>
 
   <!-- ==============================
-       ãã¼ã¸2: ã«ã¼ãæç´°
+       ページ2: カード明細
   ============================== -->
   <div class="page" id="page-card">
 
     <div class="card-summary-grid">
       <div class="card-sum-card highlight">
-        <div class="label">ã«ã¼ãæãåè¨</div>
-        <div class="value" id="cardTotal">Â¥0</div>
-        <div class="sub" id="cardCount">0ä»¶</div>
+        <div class="label">カード払い合計</div>
+        <div class="value" id="cardTotal">¥0</div>
+        <div class="sub" id="cardCount">0件</div>
       </div>
       <div class="card-sum-card">
-        <div class="label">ä»æã®æ¯åºåè¨</div>
-        <div class="value" style="color:var(--text);" id="cardAllTotal">Â¥0</div>
-        <div class="sub" id="cardRatio">ã«ã¼ãæ¯ç 0%</div>
+        <div class="label">今月の支出合計</div>
+        <div class="value" style="color:var(--text);" id="cardAllTotal">¥0</div>
+        <div class="sub" id="cardRatio">カード比率 0%</div>
       </div>
       <div class="card-sum-card">
-        <div class="label">ã«ã¼ãä»¥å¤ã®æ¯åº</div>
-        <div class="value" style="color:var(--text-sub);" id="cardOtherTotal">Â¥0</div>
-        <div class="sub">ç¾éã»PayPayã»å¼è½</div>
+        <div class="label">カード以外の支出</div>
+        <div class="value" style="color:var(--text-sub);" id="cardOtherTotal">¥0</div>
+        <div class="sub">現金・PayPay・引落</div>
       </div>
     </div>
 
-    <p class="card-section-title">ã«ãã´ãªå¥åè¨³</p>
+    <p class="card-section-title">カテゴリ別内訳</p>
     <div class="card-cat-list" id="cardCatList"></div>
 
-    <p class="card-section-title" style="margin-top:16px;">ã«ã¼ãæãæç´°</p>
+    <p class="card-section-title" style="margin-top:16px;">カード払い明細</p>
     <div class="card-records-wrap">
       <div class="card-records-header">
         <span class="card-no">#</span>
-        <span class="card-date">æ¥ä»</span>
-        <span style="flex:1">åç®</span>
-        <span>ã«ãã´ãª</span>
-        <span style="width:85px; text-align:right">éé¡</span>
+        <span class="card-date">日付</span>
+        <span style="flex:1">品目</span>
+        <span>カテゴリ</span>
+        <span style="width:85px; text-align:right">金額</span>
       </div>
       <div id="cardRecordsList"></div>
       <div class="card-total-row">
-        <span class="card-total-label">åè¨</span>
+        <span class="card-total-label">合計</span>
         <span class="card-total-count" id="cardTotalCount"></span>
-        <span class="card-total-amt" id="cardTotalAmt">Â¥0</span>
+        <span class="card-total-amt" id="cardTotalAmt">¥0</span>
       </div>
     </div>
 
@@ -538,38 +538,38 @@
 const INCOME = 170000;
 const MONTH_KEY = 'kakeibo_2026_05';
 const BUDGETS = [
-  { name:'é£è²»',              budget:30000, type:'variable' },
-  { name:'æ¥ç¨åã»åç²§å',     budget:8000,  type:'variable' },
-  { name:'éèè²»ã»è¡£é¡ã»å¤é£', budget:6000,  type:'variable' },
-  { name:'ã¬ã½ãªã³ã»ç¯æ²¹',     budget:6000,  type:'variable' },
-  { name:'ç¾å®¹é¢ã»æ¹å',       budget:5000,  type:'variable' },
-  { name:'å»çè²»ã»äºå',       budget:4000,  type:'variable' },
-  { name:'å®¶è³',              budget:35000, type:'fixed' },
-  { name:'é»æ°ã»ã¬ã¹ã»æ°´é',   budget:18000, type:'fixed' },
-  { name:'éä¿¡è²»',             budget:5000,  type:'fixed' },
-  { name:'ãµãã¹ã¯',           budget:13000, type:'fixed' },
-  { name:'è²¯èã»ç©ç«',         budget:50000, type:'fixed' },
-  { name:'ç¹å¥è²»',             budget:8000,  type:'variable' },
-  { name:'ãã®ä»',             budget:0,     type:'variable' },
+  { name:'食費',              budget:30000, type:'variable' },
+  { name:'日用品・化粧品',     budget:8000,  type:'variable' },
+  { name:'遊興費・衣類・外食', budget:6000,  type:'variable' },
+  { name:'ガソリン・灯油',     budget:6000,  type:'variable' },
+  { name:'美容院・湘南',       budget:5000,  type:'variable' },
+  { name:'医療費・予備',       budget:4000,  type:'variable' },
+  { name:'家賃',              budget:35000, type:'fixed' },
+  { name:'電気・ガス・水道',   budget:18000, type:'fixed' },
+  { name:'通信費',             budget:5000,  type:'fixed' },
+  { name:'サブスク',           budget:13000, type:'fixed' },
+  { name:'貯蓄・積立',         budget:50000, type:'fixed' },
+  { name:'特別費',             budget:8000,  type:'variable' },
+  { name:'その他',             budget:0,     type:'variable' },
 ];
 
 let records = [];
 let currentFilter = 'all';
 let currentYear = 2026, currentMonth = 5;
 
-const fmt = v => 'Â¥' + Math.abs(v).toLocaleString();
+const fmt = v => '¥' + Math.abs(v).toLocaleString();
 
 function saveRecords(r) {
   try { localStorage.setItem(MONTH_KEY, JSON.stringify(r)); } catch(e) {}
 }
 
-// èµ·åå¦çï¼å¤é¨ã¹ã¯ãªããä¸è¦ã»å³èµ·åï¼
+// 起動処理（外部スクリプト不要・即起動）
 try {
   const saved = localStorage.getItem(MONTH_KEY);
   records = saved ? JSON.parse(saved) : [];
 } catch(e) { records = []; }
 
-// ãã¼ã¸åãæ¿ã
+// ページ切り替え
 function showPage(page, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
@@ -578,28 +578,28 @@ function showPage(page, btn) {
   if (page === 'card') renderCard();
 }
 
-// æãã
+// 月ナビ
 function changeMonth(delta) {
   currentMonth += delta;
   if (currentMonth > 12) { currentMonth = 1; currentYear++; }
-  if (currentMonth < 1) { currentMonth = 12; currentYear--; }
-  document.getElementById('monthLabel').textContent = `${currentYear}å¹´${currentMonth}æ`;
+  if (currentMonth < 1)  { currentMonth = 12; currentYear--; }
+  document.getElementById('monthLabel').textContent = `${currentYear}年${currentMonth}月`;
 }
 
-// åææ¥ä»
+// 初期日付
 function initDate() {
   document.getElementById('fDate').value = new Date().toISOString().split('T')[0];
 }
 
-// è¨é²è¿½å 
+// 記録追加
 function addRecord() {
   const date = document.getElementById('fDate').value;
   const name = document.getElementById('fName').value.trim();
-  const cat  = document.getElementById('fCat'').value;
+  const cat  = document.getElementById('fCat').value;
   const pay  = document.getElementById('fPay').value;
   const amt  = parseInt(document.getElementById('fAmt').value);
   if (!date || !name || !cat || !pay || !amt || amt <= 0) {
-    alert('ãã¹ã¦ã®é ç®ãå¥åãã¦ãã ãã'); return;
+    alert('すべての項目を入力してください'); return;
   }
   records.push({ id: Date.now(), date, name, cat, pay, amt });
   saveRecords(records);
@@ -621,7 +621,7 @@ function filterTab(filter, el) {
   renderList();
 }
 
-// ã«ãã´ãªã°ãªãã
+// カテゴリグリッド
 function renderCats() {
   const grid = document.getElementById('catGrid');
   grid.innerHTML = '';
@@ -635,13 +635,13 @@ function renderCats() {
     const barClass = over ? 'over' : warn ? 'warn' : b.budget === 0 ? 'full' : 'ok';
     let statusText, statusClass;
     if (b.budget === 0) {
-      statusText = spent > 0 ? `åè¨ ${fmt(spent)}` : 'äºç®æªè¨­å®';
+      statusText = spent > 0 ? `合計 ${fmt(spent)}` : '予算未設定';
       statusClass = 'none';
     } else if (over) {
-      statusText = `è¶é ${fmt(spent - b.budget)}`; statusClass = 'over';
+      statusText = `超過 ${fmt(spent - b.budget)}`; statusClass = 'over';
     } else {
       const diff = b.budget - spent;
-      statusText = `æ®ã ${fmt(diff)}`;
+      statusText = `残り ${fmt(diff)}`;
       statusClass = diff < b.budget * 0.2 ? 'warn' : 'ok';
     }
     const card = document.createElement('div');
@@ -662,14 +662,14 @@ function renderCats() {
   document.getElementById('summaryTotal').textContent    = fmt(ts);
 }
 
-// æç´°ãªã¹ã
+// 明細リスト
 function renderList() {
   const wrap = document.getElementById('recordsList');
   const filtered = currentFilter === 'all' ? records : records.filter(r => r.pay === currentFilter);
   const sorted = [...filtered].sort((a,b) => b.date.localeCompare(a.date));
-  const payClass = { 'ã«ã¼ã':'pay-card','ç¾é':'pay-cash','PayPay':'pay-paypay','å¼è½':'pay-hikiotoshi' };
+  const payClass = { 'カード':'pay-card','現金':'pay-cash','PayPay':'pay-paypay','引落':'pay-hikiotoshi' };
   if (sorted.length === 0) {
-    wrap.innerHTML = '<div class="no-records">ã¾ã è¨é²ãããã¾ãã</div>'; return;
+    wrap.innerHTML = '<div class="no-records">まだ記録がありません</div>'; return;
   }
   wrap.innerHTML = sorted.map(r => {
     const d = r.date.replace(/^\d{4}-/, '').replace('-', '/');
@@ -679,17 +679,17 @@ function renderList() {
       <span class="record-cat">${r.cat}</span>
       <span class="record-pay ${payClass[r.pay]||''}">${r.pay}</span>
       <span class="record-amount">${fmt(r.amt)}</span>
-      <button class="record-edit" onclick="openEdit(${r.id})">â</button>
-      <button class="record-del" onclick="deleteRecord(${r.id})">â</button>
+      <button class="record-edit" onclick="openEdit(${r.id})">✎</button>
+      <button class="record-del" onclick="deleteRecord(${r.id})">✕</button>
     </div>`;
   }).join('');
 }
 
 // ========================================
-// ã«ã¼ãæç´°ãã¼ã¸æç»
+// カード明細ページ描画
 // ========================================
 function renderCard() {
-  const cardRecs = records.filter(r => r.pay === 'ã«ã¼ã')
+  const cardRecs = records.filter(r => r.pay === 'カード')
     .sort((a,b) => b.date.localeCompare(a.date));
   const cardTotal  = cardRecs.reduce((s,r) => s + r.amt, 0);
   const allTotal   = records.reduce((s,r) => s + r.amt, 0);
@@ -697,14 +697,14 @@ function renderCard() {
   const ratio      = allTotal > 0 ? Math.round(cardTotal / allTotal * 100) : 0;
 
   document.getElementById('cardTotal').textContent     = fmt(cardTotal);
-  document.getElementById('cardCount').textContent     = `${cardRecs.length}ä»¶`;
+  document.getElementById('cardCount').textContent     = `${cardRecs.length}件`;
   document.getElementById('cardAllTotal').textContent  = fmt(allTotal);
-  document.getElementById('cardRatio').textContent     = `ã«ã¼ãæ¯ç ${ratio}%`;
+  document.getElementById('cardRatio').textContent     = `カード比率 ${ratio}%`;
   document.getElementById('cardOtherTotal').textContent = fmt(otherTotal);
-  document.getElementById('cardTotalCount').textContent = `${cardRecs.length}ä»¶`;
+  document.getElementById('cardTotalCount').textContent = `${cardRecs.length}件`;
   document.getElementById('cardTotalAmt').textContent   = fmt(cardTotal);
 
-  // ã«ãã´ãªå¥åè¨³
+  // カテゴリ別内訳
   const catMap = {};
   cardRecs.forEach(r => {
     if (!catMap[r.cat]) catMap[r.cat] = { amt: 0, count: 0 };
@@ -716,23 +716,23 @@ function renderCard() {
   const maxAmt = catEntries.length > 0 ? catEntries[0][1].amt : 1;
 
   if (catEntries.length === 0) {
-    catList.innerHTML = '<div class="no-records">ã«ã¼ãæãã®è¨é²ãããã¾ãã</div>';
+    catList.innerHTML = '<div class="no-records">カード払いの記録がありません</div>';
   } else {
     catList.innerHTML = catEntries.map(([cat, data]) => {
       const barW = Math.round(data.amt / maxAmt * 100);
       return `<div class="card-cat-item">
         <span class="card-cat-name">${cat}</span>
-        <span class="card-cat-count">${data.count}ä»¶</span>
+        <span class="card-cat-count">${data.count}件</span>
         <div class="card-cat-bar-wrap"><div class="card-cat-bar" style="width:${barW}%"></div></div>
         <span class="card-cat-amt">${fmt(data.amt)}</span>
       </div>`;
     }).join('');
   }
 
-  // æç´°ä¸è¦§
+  // 明細一覧
   const listEl = document.getElementById('cardRecordsList');
   if (cardRecs.length === 0) {
-    listEl.innerHTML = '<div class="no-records">ã«ã¼ãæãã®è¨é²ãããã¾ãã</div>';
+    listEl.innerHTML = '<div class="no-records">カード払いの記録がありません</div>';
   } else {
     listEl.innerHTML = cardRecs.map((r, i) => {
       const d = r.date.replace(/^\d{4}-/, '').replace('-', '/');
@@ -747,7 +747,7 @@ function renderCard() {
   }
 }
 
-// ç·¨éã¢ã¼ãã«
+// 編集モーダル
 let editId = null;
 function openEdit(id) {
   const r = records.find(r => r.id === id);
@@ -771,14 +771,14 @@ function saveEdit() {
   const pay  = document.getElementById('ePay').value;
   const amt  = parseInt(document.getElementById('eAmt').value);
   if (!date || !name || !cat || !pay || !amt || amt <= 0) {
-    alert('ãã¹ã¦ã®é ç®ãå¥åãã¦ãã ãã'); return;
+    alert('すべての項目を入力してください'); return;
   }
   records = records.map(r => r.id === editId ? { ...r, date, name, cat, pay, amt } : r);
   saveRecords(records);
   closeEdit();
   render();
 }
-// ã¢ã¼ãã«èæ¯ã¯ãªãã¯ã§éãã
+// モーダル背景クリックで閉じる
 document.getElementById('editModal').addEventListener('click', function(e) {
   if (e.target === this) closeEdit();
 });
