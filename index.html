@@ -536,7 +536,7 @@
 
 <script>
 const INCOME = 170000;
-const MONTH_KEY = 'kakeibo_2026_05';
+function getMonthKey() { return 'kakeibo_' + currentYear + '_' + String(currentMonth).padStart(2,'0'); }
 const BUDGETS = [
   { name:'食費',              budget:30000, type:'variable' },
   { name:'日用品・化粧品',     budget:8000,  type:'variable' },
@@ -555,17 +555,18 @@ const BUDGETS = [
 
 let records = [];
 let currentFilter = 'all';
-let currentYear = 2026, currentMonth = 5;
+const _now = new Date();
+let currentYear = _now.getFullYear(), currentMonth = _now.getMonth() + 1;
 
 const fmt = v => '¥' + Math.abs(v).toLocaleString();
 
 function saveRecords(r) {
-  try { localStorage.setItem(MONTH_KEY, JSON.stringify(r)); } catch(e) {}
+  try { localStorage.setItem(getMonthKey(), JSON.stringify(r)); } catch(e) {}
 }
 
-// 起動処理（外部スクリプト不要・即起動）
+// 起動処理
 try {
-  const saved = localStorage.getItem(MONTH_KEY);
+  const saved = localStorage.getItem(getMonthKey());
   records = saved ? JSON.parse(saved) : [];
 } catch(e) { records = []; }
 
@@ -584,6 +585,15 @@ function changeMonth(delta) {
   if (currentMonth > 12) { currentMonth = 1; currentYear++; }
   if (currentMonth < 1)  { currentMonth = 12; currentYear--; }
   document.getElementById('monthLabel').textContent = `${currentYear}年${currentMonth}月`;
+  try {
+    const saved = localStorage.getItem(getMonthKey());
+    records = saved ? JSON.parse(saved) : [];
+  } catch(e) { records = []; }
+  currentFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  const allBtn = document.querySelector('.filter-btn[onclick*="all"]');
+  if (allBtn) allBtn.classList.add('active');
+  render();
 }
 
 // 初期日付
