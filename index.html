@@ -557,6 +557,7 @@
 
 <script>
 const INCOME = 170000;
+const SYNC_API_URL = 'https://kakeibo-sync.yuri04221213.workers.dev';
 function getMonthKey() { return 'kakeibo_' + currentYear + '_' + String(currentMonth).padStart(2,'0'); }
 const BUDGETS = [
   { name:'食費',              budget:30000, type:'variable' },
@@ -586,6 +587,55 @@ function saveRecords(r) {
     localStorage.setItem(getMonthKey(), JSON.stringify(r));
     autoBackup();
   } catch(e) {}
+  syncToServer(getMonthKey(), r);
+}
+
+async function syncToServer(month, data) {
+  if (!SYNC_API_URL || SYNC_API_URL.includes('YOUR_SUBDOMAIN')) return;
+  try {
+    await fetch(`${SYNC_API_URL}/api/records?month=${month}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+  } catch(e) {}
+}
+
+async function fetchMonthFromServer(month) {
+  if (!SYNC_API_URL || SYNC_API_URL.includes('YOUR_SUBDOMAIN')) return;
+  try {
+    const res = await fetch(`${SYNC_API_URL}/api/records?month=${month}`);
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    localStorage.setItem(month, JSON.stringify(data));
+    if (month === getMonthKey()) {
+      records = data;
+      render();
+      renderCard();
+    }
+  } catch(e) {}
+}
+
+async function syncAllFromServer() {
+  if (!SYNC_API_URL || SYNC_API_URL.includes('YOUR_SUBDOMAIN')) return;
+  try {
+    const res = await fetch(`${SYNC_API_URL}/api/months`);
+    if (!res.ok) return;
+    const months = await res.json();
+    for (const row of months) {
+      const mRes = await fetch(`${SYNC_API_URL}/api/records?month=${row.month}`);
+      if (!mRes.ok) continue;
+      const data = await mRes.json();
+      if (Array.isArray(data)) localStorage.setItem(row.month, JSON.stringify(data));
+    }
+    try {
+      const saved = localStorage.getItem(getMonthKey());
+      records = saved ? JSON.parse(saved) : [];
+    } catch(e) { records = []; }
+    render();
+    renderCard();
+  } catch(e) {}
 }
 function autoBackup() {
   try {
@@ -608,6 +658,7 @@ try {
   const saved = localStorage.getItem(getMonthKey());
   records = saved ? JSON.parse(saved) : [];
 } catch(e) { records = []; }
+syncAllFromServer();
 
 // ページ切り替え
 function showPage(page, btn) {
@@ -634,6 +685,7 @@ function changeMonth(delta) {
   if (allBtn) allBtn.classList.add('active');
   render();
   renderCard();
+  fetchMonthFromServer(getMonthKey());
 }
 
 // 初期日付
