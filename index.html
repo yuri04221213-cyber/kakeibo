@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>家計管理</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Sans:wght@400;500;600&display=swap');
@@ -386,7 +389,8 @@
       <button onclick="changeMonth(1)">›</button>
     </div>
     <div class="io-btns">
-      <button class="io-btn" onclick="openBackupModal()">💾 バックアップ</button>
+      <button class="io-btn" onclick="downloadCSV()">📥 CSV出力</button>
+      <button class="io-btn" onclick="openBackupModal()">💾 復元</button>
     </div>
   </div>
 </header>
@@ -578,7 +582,25 @@ let currentYear = _now.getFullYear(), currentMonth = _now.getMonth() + 1;
 const fmt = v => '¥' + Math.abs(v).toLocaleString();
 
 function saveRecords(r) {
-  try { localStorage.setItem(getMonthKey(), JSON.stringify(r)); } catch(e) {}
+  try {
+    localStorage.setItem(getMonthKey(), JSON.stringify(r));
+    autoBackup();
+  } catch(e) {}
+}
+function autoBackup() {
+  try {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (!key.startsWith('kakeibo_') || key === BACKUP_KEY) continue;
+      const arr = JSON.parse(localStorage.getItem(key));
+      if (Array.isArray(arr) && arr.length > 0) data[key] = arr;
+    }
+    if (Object.keys(data).length === 0) return;
+    const now = new Date();
+    const savedAt = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    localStorage.setItem(BACKUP_KEY, JSON.stringify({ savedAt, data }));
+  } catch(e) {}
 }
 
 // 起動処理
@@ -814,6 +836,35 @@ document.getElementById('editModal').addEventListener('click', function(e) {
 function render() { renderCats(); renderList(); }
 
 // =====================
+// CSVダウンロード（スプレッドシート用）
+// =====================
+function downloadCSV() {
+  const rows = [['年月', '日付', '品目', 'カテゴリ', '支払方法', '金額']];
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (!key.startsWith('kakeibo_') || key === 'kakeibo_BACKUP') continue;
+    try {
+      const data = JSON.parse(localStorage.getItem(key));
+      if (!Array.isArray(data)) continue;
+      data.sort((a,b) => a.date > b.date ? 1 : -1).forEach(r => {
+        rows.push([key.replace('kakeibo_',''), r.date||'', r.name||'', r.cat||'', r.pay||'', r.amt||0]);
+      });
+    } catch(e) {}
+  }
+  if (rows.length <= 1) { alert('出力するデータがありません'); return; }
+  const bom = '﻿';
+  const csv = bom + rows.map(r => r.map(v => '"' + String(v).replace(/"/g,'""') + '"').join(',')).join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const d = new Date();
+  a.download = `家計簿_${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// =====================
 // バックアップ（アプリ内保存・復元）
 // =====================
 const BACKUP_KEY = 'kakeibo_BACKUP';
@@ -840,24 +891,6 @@ function updateBackupStatus() {
   } catch(e) {
     statusEl.textContent = 'バックアップはまだありません';
   }
-}
-function createBackup() {
-  const data = {};
-  let total = 0;
-  for (let i = 0; i < localStorage.length; i++) {
-    const key = localStorage.key(i);
-    if (!key.startsWith('kakeibo_') || key === BACKUP_KEY) continue;
-    try {
-      const arr = JSON.parse(localStorage.getItem(key));
-      if (Array.isArray(arr)) { data[key] = arr; total += arr.length; }
-    } catch(e) {}
-  }
-  if (total === 0) { alert('保存するデータがありません'); return; }
-  const now = new Date();
-  const savedAt = `${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
-  localStorage.setItem(BACKUP_KEY, JSON.stringify({ savedAt, data }));
-  updateBackupStatus();
-  alert(`✅ バックアップ完了！\n${Object.keys(data).length}ヶ月・${total}件を保存しました`);
 }
 function restoreBackup() {
   try {
@@ -886,15 +919,14 @@ initDate();
 render();
 </script>
 
-<!-- バックアップモーダル -->
+<!-- バックアップ復元モーダル -->
 <div id="backupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center;">
   <div style="background:#fff; border-radius:16px; padding:28px 24px; width:min(92%, 380px); box-shadow:0 8px 32px rgba(0,0,0,0.18);">
-    <h2 style="font-size:17px; font-weight:700; margin-bottom:6px;">💾 バックアップ</h2>
-    <p style="font-size:13px; color:#6B7280; margin-bottom:20px;">データをアプリ内に保存・復元できます。<br>月1回「バックアップ作成」を押してください。</p>
-    <div id="backupStatus" style="font-size:12px; color:#6B7280; margin-bottom:16px; padding:10px 12px; background:#F3F4F6; border-radius:8px;"></div>
+    <h2 style="font-size:17px; font-weight:700; margin-bottom:6px;">🔄 データ復元</h2>
+    <p style="font-size:13px; color:#6B7280; margin-bottom:16px;">データ入力のたびに自動でバックアップされています。<br>データが消えた場合はここから復元できます。</p>
+    <div id="backupStatus" style="font-size:12px; color:#6B7280; margin-bottom:20px; padding:10px 12px; background:#F3F4F6; border-radius:8px;"></div>
     <div style="display:flex; flex-direction:column; gap:10px;">
-      <button onclick="createBackup()" style="background:#1E293B; color:white; border:none; border-radius:10px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;">✅ バックアップを今すぐ作成</button>
-      <button onclick="restoreBackup()" style="background:#EFF6FF; color:#1D4ED8; border:1px solid #BFDBFE; border-radius:10px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;">🔄 バックアップから復元</button>
+      <button onclick="restoreBackup()" style="background:#1E293B; color:white; border:none; border-radius:10px; padding:14px; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit;">🔄 バックアップから復元する</button>
       <button onclick="closeBackupModal()" style="background:none; color:#6B7280; border:none; padding:10px; font-size:14px; cursor:pointer; font-family:inherit;">閉じる</button>
     </div>
   </div>
